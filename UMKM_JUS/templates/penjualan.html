@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Penjualan UMKM Jus</title>
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+
+
+<div class="container">
+
+<div class="container">
+
+    <h1>UMKM JUS</h1>
+    <h2>Halaman Penjualan</h2>
+
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/penjualan">Penjualan</a>
+        <a href="/riwayat">Riwayat</a>
+    </nav>
+
+    {% with pesan = get_flashed_messages() %}
+        {% if pesan %}
+            <p class="pesan">{{ pesan[0] }}</p>
+        {% endif %}
+    {% endwith %}
+
+    <h2>Daftar Produk</h2>
+
+    <table>
+        <tr>
+            <th>Nama Produk</th>
+            <th>Kategori</th>
+            <th>Harga</th>
+            <th>Modal</th>
+            <th>Atur Modal</th>
+        </tr>
+
+        {% for item in produk %}
+        <tr>
+            <td>{{ item['nama'] }}</td>
+            <td>{{ item['kategori'] }}</td>
+            <td>Rp{{ "{:,}".format(item['harga']).replace(",", ".") }}</td>
+
+            <td>
+                {% if item['modal'] is not none %}
+                    Rp{{ "{:,}".format(item['modal']).replace(",", ".") }}
+                {% else %}
+                    Belum diatur
+                {% endif %}
+            </td>
+
+            <td>
+                <form action="/update-modal" method="POST">
+                    <input type="hidden" name="produk_id"
+                    value="{{ item['id'] }}">
+
+                    <input type="number" name="modal"
+                    min="0" placeholder="Modal" required>
+
+                    <button type="submit">Simpan</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+
+    <h2>Input Penjualan</h2>
+
+    <form action="/checkout" method="POST" class="form-box">
+
+        <label>Pilih Produk:</label>
+
+        <select name="produk_id" required>
+            {% for item in produk %}
+            <option value="{{ item['id'] }}">
+                {{ item['nama'] }} - Rp{{ item['harga'] }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label>Jumlah Pembelian:</label>
+
+        <input type="number" name="jumlah"
+        min="1" placeholder="Masukkan jumlah" required>
+
+        <button type="submit">Checkout</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

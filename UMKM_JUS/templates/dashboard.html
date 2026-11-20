@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard UMKM Jus</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+</head>app.py
+
+<body>
+
+<div class="container">
+<div class="container">
+
+    <h1>UMKM JUS</h1>
+    <h2>Dashboard Penjualan</h2>
+
+    <p>Selamat datang di sistem penjualan UMKM Jus!</p>
+
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/penjualan">Penjualan</a>
+        <a href="/riwayat">Riwayat</a>
+    </nav>
+
+    <div class="dashboard">
+
+        <div class="card">
+            <h3>Total Omzet</h3>
+
+            <h2>
+                Rp{{ "{:,}".format(omzet).replace(",", ".") }}
+            </h2>
+        </div>
+
+
+        <div class="card">
+            <h3>Laba Kotor</h3>
+
+            <h2>
+                {% if laba_kotor is not none %}
+                    Rp{{ "{:,}".format(laba_kotor).replace(",", ".") }}
+                {% else %}
+                    Belum lengkap
+                {% endif %}
+            </h2>
+        </div>
+
+
+        <div class="card">
+            <h3>Total Transaksi</h3>
+
+            <h2>{{ transaksi }}</h2>
+        </div>
+
+
+        <div class="card">
+            <h3>Produk Terjual</h3>
+
+            <h2>{{ produk_terjual }}</h2>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
